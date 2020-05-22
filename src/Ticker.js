@@ -19,17 +19,28 @@ class Ticker extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
 
-        if (props.price != this.state.price) {
+        if (props.price != state.price) {
 
             let x = props.price;
+           console.log(props.price)
+           console.log(props.openingPrice)
+            x = ((props.price - props.openingPrice)/props.openingPrice)*100;
+            x = x.toFixed(2);
 
-            x = calcChange(this.state.openingPrice, x);
-
-            let c = chooseColor(x);
+            let c = "";
+            console.log(x);
+            if (x === 0) {
+                c = "black";
+            } else if (Math.sign(x) === -1) {
+                c = "red";
+            } else {
+                c=  "green";
+            }
+    
 
             return {
                 price: props.price,
-                percentChange: this.x,
+                percentChange: x,
                 tickColor: c
             };
 
@@ -47,23 +58,6 @@ class Ticker extends React.Component {
 
 
 
-    calcChange(open, curr) {
-        let p = (curr - open) / open;
-        p = p.toFixed(2);
-        return p;
-    }
-
-    chooseColor(c) {
-        if (c === 0) {
-            return "black";
-        } else if (c > 0) {
-            return "green";
-        } else {
-            return "red";
-        }
-
-    }
-
 
 
     render() {
@@ -71,7 +65,7 @@ class Ticker extends React.Component {
         return (
             <div className="ticker">
                 <h1> {this.state.symbol}</h1>
-                <h1 style={{ color: this.state.tickColor }}> {this.state.percentChange} </h1>
+                <h1 style={{ color: this.state.tickColor }}> {this.state.percentChange + "%"} </h1>
             </div>
         );
 
