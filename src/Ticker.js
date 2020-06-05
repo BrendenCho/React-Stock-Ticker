@@ -22,13 +22,12 @@ class Ticker extends React.Component {
         if (props.price != state.price) {
 
             let x = props.price;
-           console.log(props.price)
-           console.log(props.openingPrice)
+
             x = ((props.price - props.openingPrice)/props.openingPrice)*100;
             x = x.toFixed(2);
 
             let c = "";
-            console.log(x);
+           
             if (x === 0) {
                 c = "black";
             } else if (Math.sign(x) === -1) {

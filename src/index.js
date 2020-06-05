@@ -6,7 +6,9 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App symbol="AAPL"/>
+    <App symbol="PSEC"/>
+    <App symbol="AMD"/>
+    <App symbol="^GSPC"/>
   </React.StrictMode>,
   document.getElementById('root')
 );

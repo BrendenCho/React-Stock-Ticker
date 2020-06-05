@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Ticker from "./Ticker"
+import Box from "./Box"
 import { render } from '@testing-library/react';
 require('dotenv').config();
 
@@ -15,7 +16,8 @@ class App extends React.Component {
       mainData: {},
       companyData: {},
       price: 0,
-      openingPrice: 0
+      openingPrice: 0,
+      companyName:""
     }
 
   }
@@ -23,7 +25,7 @@ class App extends React.Component {
   componentDidMount() {
 
     const str = "https://finnhub.io/api/v1/quote?symbol=" + this.state.symbol + "&token=" + this.state.apiKey;
-    console.log(str);
+   
     fetch(str)
       .then(responce => responce.json())
       .then(data => this.setState({
@@ -31,22 +33,37 @@ class App extends React.Component {
       }))
       .then(() => this.setState({
         price: this.state.mainData.c,
-        openingPrice: this.state.mainData.o
+        openingPrice: this.state.mainData.pc
 
       }))
+      .then(()=>{
+        console.log(this.state.mainData);
+      })
 
 
     const s = "https://finnhub.io/api/v1/stock/profile2?symbol=" + this.state.symbol + "&token=" + this.state.apiKey;
-    console.log(s);
+    
     fetch(s)
       .then(responce => responce.json())
       .then(data => this.setState({
-        companyData: data
-      })).then(() => { console.log(this.state.companyData.name) })
+        companyData: data,
+        
+      })).then(() => { console.log(this.state.companyData) })
+      .then(()=>{
+        this.setState({
+
+          companyName:this.state.companyData.name
+
+
+        }  
+          )
+
+
+      })
 
     this.interval = setInterval(() => {
       const str = "https://finnhub.io/api/v1/quote?symbol=" + this.state.symbol + "&token=" + this.state.apiKey;
-      console.log(str);
+    
       fetch(str)
         .then(responce => responce.json())
         .then(data => this.setState({
@@ -54,7 +71,7 @@ class App extends React.Component {
         }))
         .then(() => this.setState({
           price: this.state.mainData.c,
-          openingPrice: this.state.mainData.o
+          openingPrice: this.state.mainData.pc
 
         }))
     }, 60000);
@@ -67,8 +84,12 @@ class App extends React.Component {
   }
 
   render() {
-    let v = 0;
-    return <Ticker symbol={this.state.symbol} price={this.state.price} openingPrice={this.state.openingPrice} />;
+
+    return<div> 
+    <Ticker symbol={this.state.symbol} price={this.state.price} openingPrice={this.state.openingPrice} />
+    <Box companyName={this.state.companyName} symbol={this.state.symbol} price={this.state.price} openingPrice={this.state.openingPrice}/>
+
+    </div>
   }
 
 
