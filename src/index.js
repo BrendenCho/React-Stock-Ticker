@@ -8,7 +8,7 @@ ReactDOM.render(
   <React.StrictMode>
     <App symbol="PSEC"/>
     <App symbol="AMD"/>
-    <App symbol="^GSPC"/>
+    <App symbol="MGM"/>
   </React.StrictMode>,
   document.getElementById('root')
 );
